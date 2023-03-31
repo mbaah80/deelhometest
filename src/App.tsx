@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import './index.css';
+import AutoComplete from "./components/AutoComplete";
 
-function App() {
+// const options = [
+//   { label: "Apple", value: "apple" },
+//   { label: "Banana", value: "banana" },
+//   { label: "Cherry", value: "cherry" },
+//   { label: "Durian", value: "durian" },
+//   { label: "Elderberry", value: "elderberry" }
+// ];
+const App: React.FC = () => {
+  const [selectedValue, setSelectedValue] = useState("");
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/posts")
+        .then((response) => response.json())
+        .then((json) => setOptions(json));
+  }, []);
+
+  function handleSelect(value: string) {
+    setSelectedValue(value);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="app">
+        <div>
+            <h1>auto-complete component</h1>
+            <AutoComplete options={options} onSelect={handleSelect} />
+            <p>Selected value: {selectedValue}</p>
+        </div>
+      </div>
   );
-}
+};
 
 export default App;
