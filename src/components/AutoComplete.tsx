@@ -1,10 +1,9 @@
 // @ts-ignore
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './AutoCompleteCss.css';
 
 interface Option {
-    title: string;
-    value: string;
+    name: any;
 }
 
 interface AutoCompleteProps {
@@ -15,6 +14,7 @@ interface AutoCompleteProps {
 const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
     const [inputValue, setInputValue] = useState("");
     const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
+    const autocompleteRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         async function filterOptions() {
@@ -24,7 +24,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
                     () =>
                         resolve(
                             options.filter((option) =>
-                                option.title.toLowerCase().includes(inputValue.toLowerCase())
+                                option.name.common.toLowerCase().includes(inputValue.toLowerCase())
                             )
                         ),
                     500
@@ -36,35 +36,46 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
         filterOptions();
     }, [inputValue, options]);
 
+    useEffect(()=>{
+        const handleClickOutside = (event: MouseEvent) => {
+            if (autocompleteRef.current && !autocompleteRef.current.contains(event.target as Node)) {
+                setFilteredOptions([]);
+            }
+        }
+        document.addEventListener("click", handleClickOutside);
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, [])
+
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setInputValue(event.target.value);
     }
 
-    function handleOptionSelect(value: string) {
-        setInputValue("");
-        onSelect(value);
+    function handleOptionSelect(name: string) {
+        setInputValue(name);
+        onSelect(name);
+        setFilteredOptions([]);
     }
 
     return (
-        <div className="auto-complete">
+        <div className="autocomplete" ref={autocompleteRef}>
             <input
                 type="text"
                 value={inputValue}
                 onChange={handleInputChange}
-                placeholder="Type something..."
+                placeholder="Search for countries..."
+                onFocus={() => setFilteredOptions(options)}
 
             />
             {filteredOptions.length > 0 && (
                 <ul className="options">
                     {filteredOptions.map((option) => (
-                        <li
-                            key={option.value}
-                            onClick={() => handleOptionSelect(option.value)}
-                        >
-              <span className="label">
-                {option.title.slice(0, inputValue.length)}
-              </span>
-                            {option.title.slice(inputValue.length)}
+                        <li key={option.name.common} onClick={() => handleOptionSelect(option.name.common)}>
+                          <span className="label">
+                            {option.name.common.slice(0, inputValue.length)}
+                          </span>
+                            {option.name.common.slice(inputValue.length)}
                         </li>
                     ))}
                 </ul>
