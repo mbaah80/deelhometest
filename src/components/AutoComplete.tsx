@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useState, useEffect, useRef } from "react";
 import './AutoCompleteCss.css';
 
@@ -12,8 +11,9 @@ interface AutoCompleteProps {
 }
 
 const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
-    const [inputValue, setInputValue] = useState("");
+    const [countryName, setCountryName] = useState("");
     const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
+    const [isFocused, setIsFocused] = useState(false);
     const autocompleteRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
                     () =>
                         resolve(
                             options.filter((option) =>
-                                option.name.common.toLowerCase().includes(inputValue.toLowerCase())
+                                option.name.common.toLowerCase().includes(countryName.toLowerCase())
                             )
                         ),
                     500
@@ -32,11 +32,16 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
             );
             setFilteredOptions(filtered);
         }
-
-        filterOptions();
-    }, [inputValue, options]);
+        // only filter options if the input is focused
+        if (isFocused) {
+            filterOptions();
+        } else {
+            setFilteredOptions([]);
+        }
+    }, [countryName, options, isFocused]);
 
     useEffect(()=>{
+        // close the autocomplete when clicking outside of it
         const handleClickOutside = (event: MouseEvent) => {
             if (autocompleteRef.current && !autocompleteRef.current.contains(event.target as Node)) {
                 setFilteredOptions([]);
@@ -48,12 +53,12 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
         };
     }, [])
 
-    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setInputValue(event.target.value);
+    function handleCountryChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setCountryName(event.target.value);
     }
 
     function handleOptionSelect(name: string) {
-        setInputValue(name);
+        setCountryName(name);
         onSelect(name);
         setFilteredOptions([]);
     }
@@ -62,20 +67,19 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
         <div className="autocomplete" ref={autocompleteRef}>
             <input
                 type="text"
-                value={inputValue}
-                onChange={handleInputChange}
+                value={countryName}
+                onChange={handleCountryChange}
                 placeholder="Search for countries..."
-                onFocus={() => setFilteredOptions(options)}
-
+                onFocus={() => setIsFocused(true)}
             />
             {filteredOptions.length > 0 && (
                 <ul className="options">
                     {filteredOptions.map((option) => (
                         <li key={option.name.common} onClick={() => handleOptionSelect(option.name.common)}>
                           <span className="label">
-                            {option.name.common.slice(0, inputValue.length)}
+                            {option.name.common.slice(0, countryName.length)}
                           </span>
-                            {option.name.common.slice(inputValue.length)}
+                            {option.name.common.slice(countryName.length)}
                         </li>
                     ))}
                 </ul>

@@ -8,6 +8,7 @@ const App: React.FC = () => {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
+      // calling external API to get the countries
     fetch("https://restcountries.com/v3.1/all")
         .then((response) => response.json())
         .then((json) => setOptions(json));
