@@ -78,6 +78,7 @@ li:hover {
         margin-top: 15px;
         height: 40px;
         border-radius: 1px;
+        border: 1px solid #d4d4d4;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
         -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     }
@@ -92,4 +93,5 @@ li:hover {
 }
 
 }
+
 
