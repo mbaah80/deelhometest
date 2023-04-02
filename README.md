@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+
+### `Demo`
+https://deelhometest-git-main-henyweb4.vercel.app/
+
 ### `npm start`
 
 Runs the app in the development mode.\

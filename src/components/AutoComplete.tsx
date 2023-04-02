@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './AutoCompleteCss.css';
 
-interface Option {
+export interface Option {
     name: any;
 }
 
