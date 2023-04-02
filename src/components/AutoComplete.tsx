@@ -68,6 +68,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
         setFilteredOptions([]);
     }
 
+
     return (
         <div className="autocomplete"  ref={autocompleteRef}>
             <input
@@ -76,7 +77,15 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
                 value={countryName}
                 onChange={handleCountryChange}
                 placeholder="Search for countries..."
-                onFocus={() => setFilteredOptions(options)}
+                onFocus={() => {
+                    if (countryName) {
+                        setFilteredOptions(options.filter(option =>
+                            option.name.common.toLowerCase().includes(countryName.toLowerCase())
+                        ));
+                    } else {
+                        setFilteredOptions(options);
+                    }
+                }}
             />
             {
                 filteredOptions.length > 0 ? (
