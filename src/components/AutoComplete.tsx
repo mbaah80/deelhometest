@@ -93,7 +93,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
                 ) : (
                     <div className="no-options">
                         {!options.some((option) => option.name.common.toLowerCase() === countryName.toLowerCase()) && countryName && (
-                            <li>No Country Found"</li>
+                            <div className="countryNotFound">No Country Found"</div>
                         )}
                     </div>
                 )
