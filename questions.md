@@ -1,5 +1,6 @@
 
-1. PureComponent just superficially examines props and state before re-rendering, which in some cases could enhance performance. Problems could occur if the comparison is conducted too closely or if the component needs to be re-rendered despite the fact that the props or state have not changed. and Component always re-renders when its props or state change. 
+1. PureComponent just superficially examines props and state before re-rendering. and Component always re-renders when its props or state change. 
+ -  when the component's props or state contain complex data structures or objects that are being mutated, PureComponent may not behave as expected.
 
 2.  Context+ ShouldComponentUpdate can be dangerous because it can cause unexpected re-renders and performance issues, because context  pass data down the component tree without going through intermediate components.
 
@@ -33,9 +34,9 @@
       }
     }
   - Async/await is a way to handle asynchronous operations in JavaScript. and you can use try/catch to handle errors.
-    async function myAsyncFunction() {
+    async function filterOptions() {
       try {
-        const result = await myPromise;
+        const filtered = await myPromise;
         // display result or do something with it
       } catch (error) {
         // handling error
