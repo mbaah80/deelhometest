@@ -19,13 +19,13 @@
 6. WithData, WithError, WithState 
 
 7. Promises, callbacks, and async/await provides different approaches for handling exceptions in JavaScript.
-  - Promises are used to handle asynchronous operations in JavaScript. and you can use .catch() to handle errors.
+  - Promises can use .catch() to handle errors.
     myPromise.then((result) => {
       // display result or do something with it
     }).catch((error) => {
       // handling error
     });
-  - Callbacks are used to handle asynchronous operations in JavaScript. and you can use try/catch to handle errors.
+  - Callbacks can use try/catch to handle errors.
     function myCallback(error, result) {
       if (error) {
         // handling error
@@ -33,7 +33,7 @@
         // display result or do something with it
       }
     }
-  - Async/await is a way to handle asynchronous operations in JavaScript. and you can use try/catch to handle errors.
+  - Async/await can use try/catch to handle errors.
     async function filterOptions() {
       try {
         const filtered = await myPromise;
@@ -43,10 +43,10 @@
       }
     }
 
-8. setState takes in two arguments. The first parameter is the state object and the second parameter is a callback function. The callback function is called after the state has been updated.
+8. setState takes in two arguments.
    - setState is  asynchronous because it is not guaranteed that the state will be updated immediately after the setState function is called.
 
-9. Migrating a class component to a function component in React is a simple process. You can use the useState hook to manage state and useEffect hook to manage side effects.
+9. Migrating a class component to a function component steps. 
    - Identify the component that needs to be migrated and its corresponding file.
    - Identify the state and side effects in the component.
    - Remove the render() method and the constructor.
