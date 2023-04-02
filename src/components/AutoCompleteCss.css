@@ -1,15 +1,17 @@
-
-.autocomplete input {
-    width: 600px;
+.autocomplete{
+    width: 100%;
+}
+.autocomplete-input {
+    width: 100%;
     border: none;
     border-radius: 10px;
     margin-top: 40px;
     font-size: 16px;
-    padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
 }
 
-input:focus {
+.autocomplete-input:focus {
     outline: none;
     border-radius: 10px 10px 1px 1px;
 }
@@ -17,33 +19,68 @@ input:focus {
 .options {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     border-radius: 0 0 10px 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
     border-top: 1px solid #d4d4d4;
     max-height: 600px;
     overflow-y: scroll;
+    width: 100%;
 }
-
-.autocomplete .options::-webkit-scrollbar {
+.no-options{
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    color: red;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.options::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
 
-
 .options li {
     list-style: none;
-    padding: 20px;
+    padding: 10px;
     cursor: pointer;
 }
+.no-options li {
+    list-style: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
 
-.autocomplete li:hover {
+li:hover {
     background-color: #f4f4f4;
     color: #000;
 }
 
-
-.autocomplete .options .label {
+.options .label {
     font-weight: bold;
     color: #00ac6b;
 }
+
+@media screen and (max-width: 600px) {
+    .autocomplete-input{
+        width: 100%;
+        padding: 2px;
+        margin-top: 5px;
+        height: 40px;
+        border-radius: 1px;
+    }
+.options{
+        width: 100%;
+        padding: 2px;
+        border-radius: 1px;
+    }
+.no-options{
+        width: 100%;
+
+        border-radius: 1px;
+}
+
+}
+

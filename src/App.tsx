@@ -20,9 +20,7 @@ const App: React.FC = () => {
 
   return (
       <div className="app">
-        <div>
-            <AutoComplete options={options} onSelect={handleSelect} />
-        </div>
+          <AutoComplete options={options} onSelect={handleSelect} />
       </div>
   );
 };

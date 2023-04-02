@@ -5,6 +5,7 @@ interface Option {
     name: any;
 }
 
+
 interface AutoCompleteProps {
     options: Option[];
     onSelect: (value: string) => void;
@@ -13,13 +14,14 @@ interface AutoCompleteProps {
 const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
     const [countryName, setCountryName] = useState("");
     const [filteredOptions, setFilteredOptions] = useState<Option[]>([]);
-    const [isFocused, setIsFocused] = useState(false);
     const autocompleteRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        // filtering the options based on the input value
         async function filterOptions() {
             // simulate API call with mock data
             const filtered = await new Promise<Option[]>((resolve) =>
+                // timeout to simulate API call
                 setTimeout(
                     () =>
                         resolve(
@@ -30,15 +32,16 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
                     500
                 )
             );
+            // set the filtered options
             setFilteredOptions(filtered);
         }
-        // only filter options if the input is focused
-        if (isFocused) {
+        //check if the input value is not empty
+        if (countryName) {
             filterOptions();
-        } else {
+        }else{
             setFilteredOptions([]);
         }
-    }, [countryName, options, isFocused]);
+    }, [countryName, options]);
 
     useEffect(()=>{
         // close the autocomplete when clicking outside of it
@@ -53,10 +56,12 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
         };
     }, [])
 
+    // function to handle the selection of an option
     function handleCountryChange(event: React.ChangeEvent<HTMLInputElement>) {
         setCountryName(event.target.value);
     }
 
+    // function to  select country from the list
     function handleOptionSelect(name: string) {
         setCountryName(name);
         onSelect(name);
@@ -64,26 +69,35 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ options, onSelect }) => {
     }
 
     return (
-        <div className="autocomplete" ref={autocompleteRef}>
+        <div className="autocomplete"  ref={autocompleteRef}>
             <input
+                className="autocomplete-input"
                 type="text"
                 value={countryName}
                 onChange={handleCountryChange}
                 placeholder="Search for countries..."
-                onFocus={() => setIsFocused(true)}
+                onFocus={() => setFilteredOptions(options)}
             />
-            {filteredOptions.length > 0 && (
-                <ul className="options">
-                    {filteredOptions.map((option) => (
-                        <li key={option.name.common} onClick={() => handleOptionSelect(option.name.common)}>
+            {
+                filteredOptions.length > 0 ? (
+                    <ul className="options">
+                        {filteredOptions.map((option) => (
+                            <li key={option.name.common} onClick={() => handleOptionSelect(option.name.common)}>
                           <span className="label">
                             {option.name.common.slice(0, countryName.length)}
                           </span>
-                            {option.name.common.slice(countryName.length)}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                                {option.name.common.slice(countryName.length)}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <div className="no-options">
+                        {!options.some((option) => option.name.common.toLowerCase() === countryName.toLowerCase()) && countryName && (
+                            <li>No Country Found"</li>
+                        )}
+                    </div>
+                )
+            }
         </div>
     );
 };
